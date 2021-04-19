@@ -13,6 +13,7 @@ let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 let starSpeed = 0.1;
 let skySpeed = 0.01;
+let cloudSpeed = 0.05;
 
 // reserve keyboard bindings
 let keyF, keyR, keyLEFT, keyRIGHT;
