@@ -6,11 +6,13 @@ class Play extends Phaser.Scene {
     preload() {
         // load images/tile sprites
         this.load.image('fisherman', './assets/fisherman.png');
+        this.load.image('fishingbob', './assets/fisherman.png');
         this.load.image('redfish', './assets/redfish.png');
         this.load.image('bluefish', './assets/bluefish.png');
         this.load.image('greenfish', './assets/greenfish.png');
         this.load.image('sunset', './assets/sunset.png');
         this.load.image('underwater', './assets/underwater.png');
+        this.load.image('sunandmoon', './assets/sunandmoon.png');
 
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {
@@ -23,12 +25,17 @@ class Play extends Phaser.Scene {
 
     create() {
         // place starfield
-        this.starfield = this.add.tileSprite(0, 0, game.config.width, game.config.height,
+        this.sunset = this.add.tileSprite(0, 0, game.config.width, game.config.height,
+        'sunset').setOrigin(0, 0);
+        this.underwater = this.add.tileSprite(0, 0, game.config.width, game.config.height,
         'underwater').setOrigin(0, 0);
+        this.sunandmoon = this.add.tileSprite(0, 0, game.config.width, game.config.height,
+        'sunandmoon').setOrigin(0, 0);
 
         // green UI background
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width,
-        borderUISize * 2, 0x00FF00).setOrigin(0, 0);
+            borderUISize * 2, 0x00FF00).setOrigin(0, 0);
+
         // white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
@@ -36,13 +43,14 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
 
         // add rocket (player 1)
-        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - 
-        borderUISize - borderPadding, 'fisherman').setOrigin(0.5, 0);
+        this.p1Rocket = new Rocket(this, game.config.width/2, borderUISize + borderPadding + borderUISize * 4.1, 'fisherman').setOrigin(0.5, 0);
+        // add fishing bob
+        this.p2Rocket = new Fisherman(this, game.config.width/2, borderUISize + borderPadding + borderUISize * 4.1, 'fishingbob').setOrigin(0.5, 0);
 
         // add spaceship (x3)
-        this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'redfish', 0, 30).setOrigin(0, 0);
-        this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5, 'bluefish', 0, 20).setOrigin(0, 0);
-        this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'greenfish', 0, 10).setOrigin(0, 0);
+        this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 11, 'redfish', 0, 30).setOrigin(0, 0);
+        this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 9, 'bluefish', 0, 20).setOrigin(0, 0);
+        this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 6, 'greenfish', 0, 10).setOrigin(0, 0);
 
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -78,7 +86,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize
-        + borderPadding * 2, this.p1Score, scoreConfig);
+        + borderPadding * 35, this.p1Score, scoreConfig);
 
         // GAME OVER flag
         this.gameOver = false;
@@ -103,7 +111,9 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
 
-        this.starfield.tilePositionX -= starSpeed;
+        this.underwater.tilePositionX += starSpeed;
+        this.sunset.tilePositionX = 0;
+        this.sunandmoon.tilePositionX -= skySpeed;
 
         if (!this.gameOver) {
             this.p1Rocket.update();         // update rocket sprite
