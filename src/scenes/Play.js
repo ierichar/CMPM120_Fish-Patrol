@@ -6,7 +6,7 @@ class Play extends Phaser.Scene {
     preload() {
         // load images/tile sprites
         this.load.image('fisherman', './assets/fisherman.png');
-        this.load.image('fishingbob', './assets/fisherman.png');
+        this.load.image('fishingbob', './assets/fishingbob.png');
         this.load.image('redfish', './assets/redfish.png');
         this.load.image('bluefish', './assets/bluefish.png');
         this.load.image('greenfish', './assets/greenfish.png');
@@ -43,9 +43,7 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
 
         // add rocket (player 1)
-        this.p1Rocket = new Rocket(this, game.config.width/2, borderUISize + borderPadding + borderUISize * 4.1, 'fisherman').setOrigin(0.5, 0);
-        // add fishing bob
-        this.p2Rocket = new Fisherman(this, game.config.width/2, borderUISize + borderPadding + borderUISize * 4.1, 'fishingbob').setOrigin(0.5, 0);
+        this.p1Rocket = new Rocket(this, game.config.width/2, borderUISize + borderPadding + borderUISize * 4.1, 'fishingbob').setOrigin(0.5, 0);
 
         // add spaceship (x3)
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 11, 'redfish', 0, 30).setOrigin(0, 0);
