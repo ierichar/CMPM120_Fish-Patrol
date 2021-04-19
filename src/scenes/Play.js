@@ -10,6 +10,8 @@ class Play extends Phaser.Scene {
         this.load.image('redfish', './assets/redfish.png');
         this.load.image('bluefish', './assets/bluefish.png');
         this.load.image('greenfish', './assets/greenfish.png');
+
+        this.load.image('clouds', './assets/clouds.png');
         this.load.image('sunset', './assets/sunset.png');
         this.load.image('underwater', './assets/underwater.png');
         this.load.image('sunandmoon', './assets/sunandmoon.png');
@@ -24,31 +26,30 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        // place starfield
+        // place environment
         this.sunset = this.add.tileSprite(0, 0, game.config.width, game.config.height,
         'sunset').setOrigin(0, 0);
         this.underwater = this.add.tileSprite(0, 0, game.config.width, game.config.height,
         'underwater').setOrigin(0, 0);
         this.sunandmoon = this.add.tileSprite(0, 0, game.config.width, game.config.height,
         'sunandmoon').setOrigin(0, 0);
-
-        // green UI background
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width,
-            borderUISize * 2, 0x00FF00).setOrigin(0, 0);
-
-        // white borders
-        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
+        this.clouds = this.add.tileSprite(0, 0, game.config.width, game.config.height,
+        'clouds').setOrigin(0, 0);
 
         // add rocket (player 1)
         this.p1Rocket = new Rocket(this, game.config.width/2, borderUISize + borderPadding + borderUISize * 4.1, 'fishingbob').setOrigin(0.5, 0);
+        this.p2Rocket = new Rocket(this, game.config.width/2, borderUISize + borderPadding + borderUISize * 4.1, 'fisherman').setOrigin(0.5, 0);
 
         // add spaceship (x3)
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 11, 'redfish', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 9, 'bluefish', 0, 20).setOrigin(0, 0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 6, 'greenfish', 0, 10).setOrigin(0, 0);
+
+        // mahogany outer borders
+        this.add.rectangle(0, 0, game.config.width, borderUISize, 0x855E42).setOrigin(0, 0);
+        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x855E42).setOrigin(0, 0);
+        this.add.rectangle(0, 0, borderUISize, game.config.height, 0x855E42).setOrigin(0, 0);
+        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0x855E42).setOrigin(0, 0);
 
         // define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -86,6 +87,9 @@ class Play extends Phaser.Scene {
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize
         + borderPadding * 35, this.p1Score, scoreConfig);
 
+        this.timeRight = this.add.text(borderUISize + borderPadding, borderUISize
+            + borderPadding * 35, this.p1Score, game.config.gameTimer);
+
         // GAME OVER flag
         this.gameOver = false;
 
@@ -112,6 +116,7 @@ class Play extends Phaser.Scene {
         this.underwater.tilePositionX += starSpeed;
         this.sunset.tilePositionX = 0;
         this.sunandmoon.tilePositionX -= skySpeed;
+        this.clouds.tilePositionX -= cloudSpeed;
 
         if (!this.gameOver) {
             this.p1Rocket.update();         // update rocket sprite
@@ -163,6 +168,8 @@ class Play extends Phaser.Scene {
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
 
-        this.sound.play('sfx_explosion')
+        
+
+        this.sound.play('sfx_splash');
     }
 }
