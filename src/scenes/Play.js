@@ -5,11 +5,10 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images/tile sprites
-        this.load.image('fisherman', './assets/rocket.png');
+        this.load.image('fisherman', './assets/fisherman.png');
         this.load.image('redfish', './assets/redfish.png');
         this.load.image('bluefish', './assets/bluefish.png');
         this.load.image('greenfish', './assets/greenfish.png');
-        this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('sunset', './assets/sunset.png');
         this.load.image('underwater', './assets/underwater.png');
 
