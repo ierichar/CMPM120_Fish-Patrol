@@ -64,7 +64,7 @@ class Play extends Phaser.Scene {
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 6, 'greenfish', 0, 10).setOrigin(0, 0);
 
         // add special bonus fish
-        this.ship04 = new Goldfish(this, game.config.width + borderUISize * 7, borderUISize * 12, 'goldfish', 0, 50).setOrigin(0, 0);
+        this.ship04 = new Goldfish(this, game.config.width + borderUISize * 7, borderUISize * 12, 'goldfish', 0, 100).setOrigin(0, 0);
 
         // mahogany outer borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0x855E42).setOrigin(0, 0);
@@ -108,9 +108,6 @@ class Play extends Phaser.Scene {
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize
         + borderPadding * 35, this.p1Score, scoreConfig);
 
-        this.timeRight = this.add.text(borderUISize + borderPadding, borderUISize
-            + borderPadding * 35, game.config.gameTimer);
-
         // GAME OVER flag
         this.gameOver = false;
 
@@ -148,7 +145,7 @@ class Play extends Phaser.Scene {
         }
 
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
+        if(this.checkCollision(this.p1Rocket, this.ship04)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship04);
         }

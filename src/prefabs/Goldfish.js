@@ -11,7 +11,7 @@ class Goldfish extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);                         // add to existing scene
         this.points = pointValue;                         // store pointValue
-        this.moveSpeed = game.settings.spaceshipSpeed + 1;    // pixels per frame
+        this.moveSpeed = game.settings.spaceshipSpeed;    // pixels per frame
     }
 
     update() {
