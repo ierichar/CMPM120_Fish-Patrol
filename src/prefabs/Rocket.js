@@ -1,3 +1,11 @@
+/***
+ * Ian Richardson, ierichar
+ * Spring 2021, CMPM 120
+ * Rocket Patrol Mod Assignment - 'Fishing Patrol'
+ * Estimated Completion Time: ~ 10 hours
+ * 
+ * Rocket.js
+ */
 // Rocket (projectile) prefab
 class Rocket extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {

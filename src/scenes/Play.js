@@ -1,3 +1,20 @@
+/***
+ * Ian Richardson, ierichar
+ * Spring 2021, CMPM 120
+ * Rocket Patrol Mod Assignment - 'Fishing Patrol'
+ * Estimated Completion Time: ~ 10 hours
+ * 
+ * Play.js
+ * 
+ * S(hrek) Tier 
+ * - (60) Redesign the game's artwork, UI, and sound to change its theme/aesthetic (to something other than sci-fi)
+ * Intermediate Tier
+ * - (20) Create a new spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points
+ * Novice Tier
+ * - (10) Implement parallax scrolling
+ * Starting Tier
+ * - (5) Add your own (copyright-free) background music to the Play scene
+ */
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene");
@@ -10,6 +27,7 @@ class Play extends Phaser.Scene {
         this.load.image('redfish', './assets/redfish.png');
         this.load.image('bluefish', './assets/bluefish.png');
         this.load.image('greenfish', './assets/greenfish.png');
+        this.load.image('goldfish', './assets/goldfish.png');
 
         this.load.image('clouds', './assets/clouds.png');
         this.load.image('sunset', './assets/sunset.png');
@@ -44,6 +62,9 @@ class Play extends Phaser.Scene {
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 11, 'redfish', 0, 30).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 9, 'bluefish', 0, 20).setOrigin(0, 0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 6, 'greenfish', 0, 10).setOrigin(0, 0);
+
+        // add special bonus fish
+        this.ship04 = new Goldfish(this, game.config.width + borderUISize * 7, borderUISize * 12, 'goldfish', 0, 50).setOrigin(0, 0);
 
         // mahogany outer borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0x855E42).setOrigin(0, 0);
@@ -88,7 +109,7 @@ class Play extends Phaser.Scene {
         + borderPadding * 35, this.p1Score, scoreConfig);
 
         this.timeRight = this.add.text(borderUISize + borderPadding, borderUISize
-            + borderPadding * 35, this.p1Score, game.config.gameTimer);
+            + borderPadding * 35, game.config.gameTimer);
 
         // GAME OVER flag
         this.gameOver = false;
@@ -122,10 +143,15 @@ class Play extends Phaser.Scene {
             this.p1Rocket.update();         // update rocket sprite
             this.ship01.update();           // update spaceships (x3)
             this.ship02.update();
-            this.ship03.update();   
+            this.ship03.update();
+            this.ship04.update();
         }
 
         // check collisions
+        if(this.checkCollision(this.p1Rocket, this.ship03)) {
+            this.p1Rocket.reset();
+            this.shipExplode(this.ship04);
+        }
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03);
@@ -146,6 +172,19 @@ class Play extends Phaser.Scene {
             rocket.x + rocket.width > ship.x &&
             rocket.y < ship.y + ship.height &&
             rocket.height + rocket.y > ship.y) {
+                return true;
+        } else {
+            return false;
+        }
+            
+    }
+
+    checkCollision(rocket, goldfish) {
+        // simple AABB checking
+        if( rocket.x < goldfish.x + goldfish.width &&
+            rocket.x + rocket.width > goldfish.x &&
+            rocket.y < goldfish.y + goldfish.height &&
+            rocket.height + rocket.y > goldfish.y) {
                 return true;
         } else {
             return false;

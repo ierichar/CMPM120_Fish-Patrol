@@ -1,3 +1,11 @@
+/***
+ * Ian Richardson, ierichar
+ * Spring 2021, CMPM 120
+ * Rocket Patrol Mod Assignment - 'Fishing Patrol'
+ * Estimated Completion Time: ~ 10 hours
+ * 
+ * Menu.js
+ */
 class Menu extends Phaser.Scene {
     constructor() {
         super("menuScene");
